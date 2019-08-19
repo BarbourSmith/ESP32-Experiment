@@ -23,7 +23,7 @@ float errorDist = 0.0;
 const int MotorIn1 = 12;
 const int MotorIn2 = 14;
 
-MiniPID pid = MiniPID(255,0,0);
+MiniPID pid = MiniPID(1000,.1,0);
 
 void setup(){
   Serial.begin(115200);
@@ -74,28 +74,22 @@ void setup(){
   
   MotorControl.attachMotor(MotorIn1, MotorIn2);
   motorStop();
+  
+  pid.setOutputLimits(-255,255);
 
 }
  
 void loop(){
     
+    //Find the position
     AngleCurrent = angleSensor.RotationRawToAngle(angleSensor.getRawRotation());
     angleSensor.AbsoluteAngleRotation(&RotationAngle, &AngleCurrent, &AnglePrevious);
     errorDist = setPoint - (RotationAngle/360.0);
     
+    //Set the speed of the motor
+    motorSpeed(int(pid.getOutput(RotationAngle/360.0,setPoint)));
     
-    if(errorDist > .1 || errorDist < -.1){
-        motorSpeed(int(pid.getOutput(RotationAngle/360.0,setPoint)));
-    }
-    else{
-        //Serial.println("stop");
-        motorStop();
-    }
-    
-    Serial.print(int(errorDist*255.0));
-    Serial.print("  ");
-    Serial.print(setPoint);
-    Serial.print("  ");
+    //Print it out
     Serial.println(int(pid.getOutput(RotationAngle/360.0,setPoint)));
     
 }
