@@ -1,6 +1,6 @@
 #include "Arduino.h"
 
-#include <AS5048A.h> 
+#include "AS5048A.h"
 
 //#define AS5048A_DEBUG
 
@@ -51,7 +51,7 @@ void AS5048A::init(){
  // initialization of the Slave Select pin if the LOW slave interacts with the master if the HIGH slave ignores the signals from the master
   pinMode(_cs, OUTPUT);
   //SPI has an internal SPI-device counter, it is possible to call "begin()" from different devices
-  SPI.begin();
+  SPI.begin(); //void begin(int8_t sck=-1, int8_t miso=-1, int8_t mosi=-1, int8_t ss=-1);
 }
 
 /**
