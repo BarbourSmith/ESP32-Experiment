@@ -74,7 +74,6 @@ void Adafruit_TLC59711::spiwriteMSB(uint8_t d) {
       else
         digitalWrite(_dat, LOW);
       digitalWrite(_clk, HIGH);
-      delayMicroseconds(1);
     }
   } else {
     _spi->transfer(d);
@@ -114,9 +113,9 @@ void Adafruit_TLC59711::write() {
     spiwriteMSB(command >> 8);
     spiwriteMSB(command);
 
-    //12 channels per TLC59711
+    // 12 channels per TLC59711
     for (int8_t c = 11; c >= 0; c--) {
-      //16 bits per channel, send MSB first
+      // 16 bits per channel, send MSB first
       spiwriteMSB(pwmbuffer[n * 12 + c] >> 8);
       spiwriteMSB(pwmbuffer[n * 12 + c]);
     }
@@ -124,12 +123,9 @@ void Adafruit_TLC59711::write() {
 
   if (_clk >= 0)
     delayMicroseconds(200);
-    Serial.println(_clk);
-    Serial.println(_dat);
-  //else
-    //delayMicroseconds(2);
-    //_spi->endTransaction();
-    //Serial.println("Second fake delay");
+  else
+    delayMicroseconds(2);
+    _spi->endTransaction();
 
   interrupts();
 }

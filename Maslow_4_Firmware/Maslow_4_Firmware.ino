@@ -9,11 +9,6 @@
 #include "Adafruit_TLC59711.h" //https://github.com/adafruit/Adafruit_TLC59711
 #include "comands.h"
 
-#define NUM_TLC59711 1
-
-#define tlcData   5
-#define tlcClock  21
-
 const char* ssid = "Barbour";
 const char* password = "hammockreader";
  
@@ -31,7 +26,11 @@ const int MotorIn2 = 14;
 
 MiniPID pid = MiniPID(1000,.1,0);
 
-Adafruit_TLC59711 tlc = Adafruit_TLC59711(NUM_TLC59711, tlcClock, tlcData);
+
+#define NUM_TLC59711 1
+#define tlcData   5
+#define tlcClock  21
+Adafruit_TLC59711 tlc = Adafruit_TLC59711(NUM_TLC59711, tlcData, tlcClock);
 
 void setup(){
   Serial.begin(115200);
@@ -86,7 +85,7 @@ void setup(){
   pid.setOutputLimits(-255,255);
   
   tlc.begin();
-  //tlc.write();
+  tlc.write();
 
 }
  
@@ -104,17 +103,10 @@ void loop(){
     //Serial.println(int(pid.getOutput(RotationAngle/360.0,setPoint)));
     Serial.println(AngleCurrent);
     
-    tlc.setPWM(1,65535);
-    // tlc.setPWM(2,65535);
-    // tlc.setPWM(3,65535);
-    // tlc.setPWM(4,65535);
-    // tlc.setPWM(5,65535);
-    // tlc.setPWM(6,65535);
-    // tlc.setPWM(8,65535);
-    // tlc.setPWM(9,65535);
-    // tlc.setPWM(10,65535);
-    // tlc.setPWM(11,65535);
-    // tlc.setPWM(12,65535);
-    // tlc.write();
+    tlc.setLED(1, 35535, 35535, 35535);
+    tlc.setLED(2, 35535, 35535, 35535);
+    tlc.setLED(3, 35535, 35535, 35535);
+    tlc.setLED(4, 35535, 35535, 35535);
+    tlc.write();
     
 }
